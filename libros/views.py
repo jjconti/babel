@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from rest_framework import mixins, viewsets
 
-# Create your views here.
+from libros.models import Libro
+from libros.serializers import LibrosSerializer
+
+
+class LibrosViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    API endpoint para listar libros.
+    """
+    queryset = Libro.objects.all().order_by('titulo')
+    serializer_class = LibrosSerializer

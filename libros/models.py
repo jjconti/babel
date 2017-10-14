@@ -26,5 +26,9 @@ class Libro(models.Model):
     fecha_publicacion = models.DateField()
     autor = models.ForeignKey(Autor)
 
+    @property
+    def nombre_autor(self):
+        return unicode(self.autor)
+
     def __str__(self):
         return self.titulo
