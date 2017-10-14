@@ -7,11 +7,11 @@ from libros.models import Autor, Libro
 
 
 class AutorAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('nombre', 'apellido')
 
 
 class LibroAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('titulo',)
 
 
 admin.site.register(Autor, AutorAdmin)
