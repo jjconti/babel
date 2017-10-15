@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.db.models.functions import Lower
+
 from rest_framework import mixins, viewsets, filters, pagination
 
 from libros.models import Libro
@@ -16,7 +18,7 @@ class LibrosViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     API endpoint para listar libros.
     """
-    queryset = Libro.objects.all().order_by('titulo')
+    queryset = Libro.objects.all().order_by(Lower('titulo'))
     serializer_class = LibrosSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('titulo', 'autor__nombre', 'autor__apellido')

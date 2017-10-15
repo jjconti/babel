@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from datetime import datetime, timedelta
-import string
 
 import factory
 from factory import fuzzy
@@ -30,7 +29,7 @@ class LibroFactory(factory.django.DjangoModelFactory):
     """
     Factory de objectos Libro para usar en los tests.
     """
-    titulo = fuzzy.FuzzyText(chars=string.ascii_uppercase)
+    titulo = fuzzy.FuzzyText()
     autor = factory.SubFactory(AutorFactory)
     fecha_publicacion = fuzzy.FuzzyDate(TWENTY_YEARS_AGO, datetime.now())
 

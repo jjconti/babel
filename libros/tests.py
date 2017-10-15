@@ -30,7 +30,7 @@ class LibrosTestCase(TestCase):
         url = reverse('libros-list')
         response = self.client.get(url)
         data = response.json()
-        titulos = [l['titulo'] for l in data['results']]
+        titulos = [l['titulo'].lower() for l in data['results']]
         self.assertEqual(titulos, sorted(titulos))
 
 
