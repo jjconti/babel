@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db.models.functions import Lower
+from django.shortcuts import render
 
 from rest_framework import mixins, viewsets, filters, pagination
 
@@ -23,3 +24,7 @@ class LibrosViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('titulo', 'autor__nombre', 'autor__apellido')
     pagination_class = ConfigurablePagination
+
+
+def libros_list(request):
+    return render(request, 'libros.html', {})

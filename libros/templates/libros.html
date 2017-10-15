@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <h1 class="page-header">Libros</h1>
+  <table class="display table table-bordered" id="libros">
+    <thead>
+      <tr>
+        <th data-field="titulo">Título</th>
+        <th data-field="nombre_autor">Autor</th>
+        <th data-field="fecha_publicacion">Fecha de publicación</th>
+      </tr>
+    </thead>
+  </table>
+{% endblock %}
+{% block javascript %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+<script src="{% static 'table.js' %}"></script>
+{% endblock %}
