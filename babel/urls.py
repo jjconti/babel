@@ -9,7 +9,7 @@ from rest_framework import routers
 from libros.views import LibrosViewSet
 
 router = routers.DefaultRouter()
-router.register(r'libros', LibrosViewSet)
+router.register(r'libros', LibrosViewSet, base_name='libros')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
