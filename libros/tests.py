@@ -80,7 +80,7 @@ class PaginationLibrosTestCase(TestCase):
         for x in range(100):
             LibroFactory()
 
-    def test_list(self):
+    def test_pagination(self):
         url = reverse('libros-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -96,3 +96,20 @@ class PaginationLibrosTestCase(TestCase):
         self.assertEqual(len(data['results']), 10)
         self.assertIsNotNone(data['previous'])
         self.assertIsNotNone(data['next'])
+
+    def test_pagination_page_size(self):
+        url = reverse('libros-list')
+        url += '?page_size={}'
+        response = self.client.get(url.format(50))
+        data = response.json()
+        self.assertEqual(data['count'], 100)
+        self.assertEqual(len(data['results']), 50)
+        self.assertIsNone(data['previous'])
+        self.assertIsNotNone(data['next'])
+
+        response = self.client.get(data['next'])
+        data = response.json()
+        self.assertEqual(data['count'], 100)
+        self.assertEqual(len(data['results']), 50)
+        self.assertIsNotNone(data['previous'])
+        self.assertIsNone(data['next'])

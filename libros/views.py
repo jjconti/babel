@@ -9,6 +9,7 @@ from libros.serializers import LibrosSerializer
 
 class ConfigurablePagination(pagination.PageNumberPagination):
     page_size = 10
+    page_size_query_param = 'page_size'
 
 
 class LibrosViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
