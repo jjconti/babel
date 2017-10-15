@@ -24,13 +24,13 @@ class LibrosTestCase(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
-        self.assertEqual(len(data), 10)
+        self.assertEqual(len(data['results']), 10)
 
     def test_list_sorted_by_title(self):
         url = reverse('libros-list')
         response = self.client.get(url)
         data = response.json()
-        titulos = [l['titulo'] for l in data]
+        titulos = [l['titulo'] for l in data['results']]
         self.assertEqual(titulos, sorted(titulos))
 
 
@@ -52,13 +52,13 @@ class SearchLibrosTestCase(TestCase):
         response = self.client.get(url.format('oyo'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = json.loads(response.content.decode('utf-8'))
-        self.assertEqual(len(data), 3)
-        self.assertEqual(data[0]['titulo'], "Chamamé")
-        self.assertEqual(data[0]['nombre_autor'], "Leonardo Oyola")
-        self.assertEqual(data[1]['titulo'], "Nunca corrí siempre cobré")
-        self.assertEqual(data[1]['nombre_autor'], "Leonardo Oyola")
-        self.assertEqual(data[2]['titulo'], "Siete y el tigre harapiento")
-        self.assertEqual(data[2]['nombre_autor'], "Leonardo Oyola")
+        self.assertEqual(len(data['results']), 3)
+        self.assertEqual(data['results'][0]['titulo'], "Chamamé")
+        self.assertEqual(data['results'][0]['nombre_autor'], "Leonardo Oyola")
+        self.assertEqual(data['results'][1]['titulo'], "Nunca corrí siempre cobré")
+        self.assertEqual(data['results'][1]['nombre_autor'], "Leonardo Oyola")
+        self.assertEqual(data['results'][2]['titulo'], "Siete y el tigre harapiento")
+        self.assertEqual(data['results'][2]['nombre_autor'], "Leonardo Oyola")
 
     def test_list_search_title_autor(self):
         url = reverse('libros-list')
@@ -66,8 +66,33 @@ class SearchLibrosTestCase(TestCase):
         response = self.client.get(url.format('ma'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = json.loads(response.content.decode('utf-8'))
-        self.assertEqual(len(data), 2)
-        self.assertEqual(data[0]['titulo'], "Chamamé")
-        self.assertEqual(data[0]['nombre_autor'], "Leonardo Oyola")
-        self.assertEqual(data[1]['titulo'], "Los cuerpos del verano")
-        self.assertEqual(data[1]['nombre_autor'], "Martín Castagnet")
+        self.assertEqual(len(data['results']), 2)
+        self.assertEqual(data['results'][0]['titulo'], "Chamamé")
+        self.assertEqual(data['results'][0]['nombre_autor'], "Leonardo Oyola")
+        self.assertEqual(data['results'][1]['titulo'], "Los cuerpos del verano")
+        self.assertEqual(data['results'][1]['nombre_autor'], "Martín Castagnet")
+
+
+class PaginationLibrosTestCase(TestCase):
+    client_class = APIClient
+
+    def setUp(self):
+        for x in range(100):
+            LibroFactory()
+
+    def test_list(self):
+        url = reverse('libros-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data['count'], 100)
+        self.assertEqual(len(data['results']), 10)
+        self.assertIsNone(data['previous'])
+        self.assertIsNotNone(data['next'])
+
+        response = self.client.get(data['next'])
+        data = response.json()
+        self.assertEqual(data['count'], 100)
+        self.assertEqual(len(data['results']), 10)
+        self.assertIsNotNone(data['previous'])
+        self.assertIsNotNone(data['next'])
