@@ -2,7 +2,7 @@ $(document).ready(function() {
    $('#libros').bootstrapTable({
       url: "/api/libros/",
       responseHandler: function(data) {
-        return {'total': data['count'], 'rows': data['results']}
+        return {'total': data.count, 'rows': data.results}
       },
       pagination: true,
       sidePagination: 'server',
