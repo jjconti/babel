@@ -6,6 +6,8 @@ $(document).ready(function() {
       },
       pagination: true,
       sidePagination: 'server',
+      pageSize: 10,
+      pageList: [5, 10, 25, 50],
       queryParamsType: 'no_limit',
       queryParams: function(params) {
         return {
